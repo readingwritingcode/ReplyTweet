@@ -12,5 +12,5 @@ def authtwtr():
 	auth.set_access_token(access_token, access_token_secret)
 
 	global api
-	api = tweepy.API(auth)
+	api = tweepy.API(auth,wait_on_rate_limit=True,wait_on_rate_limit_notify=True)
 	return api

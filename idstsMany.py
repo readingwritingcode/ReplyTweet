@@ -4,45 +4,38 @@ import time
 import authtwtr
 
 def makeScreenNames(path_to_file):
-        ''' Read files with names and screen names.
-            Return list of screen names.
-            Input: path to file with names:@screennames.
-        '''
-	with open(path_to_file,'r') as file:
-		users=file.readlines()
+        
+        with open(path_to_file,'r') as file:
+                users=file.readlines()
 
-	global screen_names
-	screen_names=[]
+        global screen_names
+        screen_names=[]
 
-	for i in users:
-		screen_names.append(i.split(':')[1].strip('@').strip('\n'))
-	return screen_names
+        for i in users:
+                screen_names.append(i.split(':')[1].strip('@').strip('\n'))
+        return screen_names
+
 
 def getFiveStatusId(screenname,api):
-        ''' Get last five status make by one screen name.
-            Input: screen name.
-        '''
-	lut=api.user_timeline(screenname,count=5)
-	id_1=lut[0]._json['id_str']
-	id_2=lut[1]._json['id_str']
-	id_3=lut[2]._json['id_str']
-	id_4=lut[3]._json['id_str']
-	id_5=lut[4]._json['id_str']
-	global five_status_id
-	five_status_id=[id_1,id_2,id_3,id_4,id_5]
-	return five_status_id
+        lut=api.user_timeline(screenname,count=5)
+        id_1=lut[0]._json['id_str']
+        id_2=lut[1]._json['id_str']
+        id_3=lut[2]._json['id_str']
+        id_4=lut[3]._json['id_str']
+        id_5=lut[4]._json['id_str']
+        global five_status_id
+        five_status_id=[id_1,id_2,id_3,id_4,id_5]
+        return five_status_id
 
 def makeListIdforReply(screen_names, api):
-        ''' Make a list of status ids for a list of screen names.
-            Input: Screen_names, api
-        '''
-	global ids_for_reply
-	ids_for_reply=[]
-	for scn in screen_names:
-		fsi=getfivestatusid(scn,api)
-		ids_for_reply.extend(fsi)
-		time.sleep(0.5)
-	return ids_for_reply
+
+        global ids_for_reply
+        ids_for_reply=[]
+        for scn in screen_names:
+                fsi=getFiveStatusId(scn,api)
+                ids_for_reply.extend(fsi)
+                time.sleep(0.5)
+        return ids_for_reply
 
 def main(path_to_file,api):
         
